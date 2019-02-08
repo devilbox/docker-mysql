@@ -1,0 +1,93 @@
+---
+###
+### Enable sudo (required for docker service)
+###
+sudo: required
+
+
+###
+### Language
+###
+language: python
+
+
+###
+### Add services
+###
+services:
+  - docker
+
+
+###
+### Build Matrix
+###
+env:
+  global:
+    - IMAGE: devilbox/mysql
+    # travis encrypt DOCKER_USERNAME=user
+    # travis encrypt DOCKER_PASSWORD=pass
+    # Must be regenerated when repository name/owner changes
+    # DOCKER_USERNAME
+    - secure: "Mgs2TmtntruWbuinhuVKeH4fMpMVVMwcNljdSCOEAUaBKvYmQZMQbeTrEFmVwrRECdAmHnQd41s+dI3JrOr3BNAdU8ohyXjo+m/n9gXukRcH00AsV1JXupgaEef4FwIw/MxY2KLSh3SiAL23MYDq5TLb+Ycy6UtI5uwff24oriG6t5OroFM8ise/uCXhQVqCiZIV1wBR8M+y5xkOlXSDFL47tvGHFHs7p/HNakGCnBoVqHdwl3N8816vYvD10CUT5TtZVVKAiVOfPKiptxHkYyGlvMeoeekUjLZswJvdJ3JSmnX24C5tSHfNAT6FGcG7H9Nx2/qAhRDYntk3kCZNUBv34wpMcQl6N+eD8zx24ZGhlG5eVG9e9K+WlNSTxoxlEKvLGlclK7+/s96On8u3YllZ77FRToV7cDLKKKm/LHU3/kGyUBu+BTN4q/2xV+os9u78cAU40fuBHpLO9Brtf8HS8/4TgM+mT2h1c1Fw2sUiu3ofs6XE1EK8n/rv/49t2jJNggJUZX40OUzqa/+mfzmeqxis38h+QjNJ2CacWDQEjQO4mTEfFwo5qKwXEHmIXxk79kc6RlVNPCJ2vHF7xmbR42YefU7WB275ziJJg6F67bC/9sz1Hz/dWwne8imuafR8FTgAhaOFnaJPplSXHrGp12Ftmz+nnVzE+VkVTj4="
+    # DOCKER_PASSWORD
+    - secure: "Ua6WBWxtvAyg4UqNqyZg4DqEy/D38JX24FmD6OI+0+/FCauniZqt7v/NNafTdp3TKCi3g7PDDoIH0M19tsARMza5cPMXf+s6qMOFEVNdORmO4HIyVlCD5xCMRkxTB9R7iqcdYOrgUkdFTcV9vfCOluTXW9Z7gkJL18TUftqhLwJ14dmyRgRk255VFadxqfdQi1uXIbFvW88jV0MCCQOzxUxbiUwIdA+lzEZxlB97nfRElO2RPIjnlg2+Yyakp8QU1Jkvv0jk1epJ/C/QT3qvBu2mkrH8u9biKN8KyF5JCuB+QVB3eIAexV2tZyvJLIdyLQHUii+Nx8Er6HzVFQrMbXKMN2c1i6aONgpjlHFHNDK/uXDpGS+m0eBWgapEnW/1b6tYUt9dVaVTllxf0BqhFuLziW3iHRFo2gozGoRon7Ud5uKOWgzWHnycg3NZcWQArzNB4gPKKd6PhPST74W6EP3d6QcTzPFr51qL4ltKsDzVWncV4hiXQzx4tHIyqfLhinFyIn6ck2CxFnReGSHjIxylTnKeXj4jRUQP1Q9uIgSTZpcgwtrD1/eL9037piKmyH/oE+DWxN1HUpyqy2kMOXctO+mhPdqJxb769gUfLtKs1pgUjIJ2QF80WCM8kx/l6CQm+GR8DVOKlgmKpx6wyjacZ97INvnybt61IK68vrY="
+  matrix:
+    - V=mysql-5.5
+    - V=mysql-5.6
+    - V=mysql-5.7
+    - V=mysql-8.0
+    - V=mariadb-5.5
+    - V=mariadb-10.0
+    - V=mariadb-10.1
+    - V=mariadb-10.2
+    - V=mariadb-10.3
+    - V=mariadb-10.4
+    - V=percona-5.5
+    - V=percona-5.6
+    - V=percona-5.7
+    - V=percona-8.0
+
+
+###
+### Install requirements
+###
+install: true
+
+
+###
+### Build and test
+###
+before_script:
+  - make build-${V}
+  - make test-${V}
+
+
+###
+### Push to Dockerhub
+###
+script:
+  - if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
+      make login USER="${DOCKER_USERNAME}" PASS="${DOCKER_PASSWORD}";
+      if [ "${TRAVIS_BRANCH}" == "master" ]; then
+        echo "Pushing latest";
+        until docker push "${IMAGE}:${V}"; do sleep 1; done;
+      elif [[ ${TRAVIS_BRANCH} =~ ^(release-[.0-9]+)$ ]]; then
+        echo "Pushing branch ${TRAVIS_BRANCH}";
+        docker tag "${IMAGE}:${V}" "${IMAGE}:${V}-${TRAVIS_BRANCH}" &&
+        until docker push "${IMAGE}:${V}-${TRAVIS_BRANCH}"; do sleep 1; done;
+      elif [ -n "${TRAVIS_TAG}" ]; then
+        echo "Pushing tag ${TRAVIS_TAG}";
+        docker tag "${IMAGE}:${V}" "${IMAGE}:${V}-${TRAVIS_TAG}" &&
+        until docker push "${IMAGE}:${V}-${TRAVIS_TAG}"; do sleep 1; done;
+      elif [ "${TRAVIS_EVENT_TYPE}" = "cron" ]; then
+        if MY_TAG="$( git describe --exact-match "$(git rev-parse HEAD)" 2>/dev/null )"; then
+          echo "Pushing cron tag ${MY_TAG}";
+          docker tag "${IMAGE}:${V}" "${IMAGE}:${V}-${MY_TAG}" &&
+          until docker push "${IMAGE}:${V}-${MY_TAG}"; do sleep 1; done;
+        fi
+      else
+        echo "Skipping push to dockerhub on normal branches";
+      fi
+    else
+      echo "Skipping push to dockerhub on PR";
+    fi
