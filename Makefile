@@ -38,13 +38,17 @@ build-mysql-8.0:
 	docker tag mysql:8.0 $(IMAGE):mysql-8.0
 
 test-mysql-5.5:
-	docker run --rm -it $(IMAGE):mysql-5.5 -V | grep 'MySQL' | grep '5\.5'
+	./tests/01-version.sh "mysql" "5.5"
+	./tests/02-mysqli.sh  "mysql" "5.5"
 test-mysql-5.6:
-	docker run --rm -it $(IMAGE):mysql-5.6 -V | grep 'MySQL' | grep '5\.6'
+	./tests/01-version.sh "mysql" "5.6"
+	./tests/02-mysqli.sh  "mysql" "5.6"
 test-mysql-5.7:
-	docker run --rm -it $(IMAGE):mysql-5.7 -V | grep 'MySQL' | grep '5\.7'
+	./tests/01-version.sh "mysql" "5.7"
+	./tests/02-mysqli.sh  "mysql" "5.7"
 test-mysql-8.0:
-	docker run --rm -it $(IMAGE):mysql-8.0 -V | grep 'MySQL' | grep '8\.0'
+	./tests/01-version.sh "mysql" "8.0"
+	./tests/02-mysqli.sh  "mysql" "8.0"
 
 
 # -------------------------------------------------------------------------------------------------
@@ -70,17 +74,23 @@ build-mariadb-10.4:
 	docker tag mariadb:10.4 $(IMAGE):mariadb-10.4
 
 test-mariadb-5.5:
-	docker run --rm -it $(IMAGE):mariadb-5.5 -V | grep 'MariaDB' | grep '5\.5'
+	./tests/01-version.sh "mariadb" "5.5"
+	./tests/02-mysqli.sh  "mariadb" "5.5"
 test-mariadb-10.0:
-	docker run --rm -it $(IMAGE):mariadb-10.0 -V | grep 'MariaDB' | grep '10\.0'
+	./tests/01-version.sh "mariadb" "10.0"
+	./tests/02-mysqli.sh  "mariadb" "10.0"
 test-mariadb-10.1:
-	docker run --rm -it $(IMAGE):mariadb-10.1 -V | grep 'MariaDB' | grep '10\.1'
+	./tests/01-version.sh "mariadb" "10.1"
+	./tests/02-mysqli.sh  "mariadb" "10.1"
 test-mariadb-10.2:
-	docker run --rm -it $(IMAGE):mariadb-10.2 -V | grep 'MariaDB' | grep '10\.2'
+	./tests/01-version.sh "mariadb" "10.2"
+	./tests/02-mysqli.sh  "mariadb" "10.2"
 test-mariadb-10.3:
-	docker run --rm -it $(IMAGE):mariadb-10.3 -V | grep 'MariaDB' | grep '10\.3'
+	./tests/01-version.sh "mariadb" "10.3"
+	./tests/02-mysqli.sh  "mariadb" "10.3"
 test-mariadb-10.4:
-	docker run --rm -it $(IMAGE):mariadb-10.4 -V | grep 'MariaDB' | grep '10\.4'
+	./tests/01-version.sh "mariadb" "10.4"
+	./tests/02-mysqli.sh  "mariadb" "10.4"
 
 
 # -------------------------------------------------------------------------------------------------
@@ -109,10 +119,14 @@ build-percona-8.0:
 	docker tag percona:8.0 $(IMAGE):percona-8.0
 
 test-percona-5.5:
-	docker run --rm -it $(IMAGE):percona-5.5 -V | grep 'Percona' | grep '5\.5'
+	./tests/01-version.sh "percona" "5.5"
+	./tests/02-mysqli.sh  "percona" "5.5"
 test-percona-5.6:
-	docker run --rm -it $(IMAGE):percona-5.6 -V | grep 'Percona' | grep '5\.6'
+	./tests/01-version.sh "percona" "5.6"
+	./tests/02-mysqli.sh  "percona" "5.6"
 test-percona-5.7:
-	docker run --rm -it $(IMAGE):percona-5.7 -V | grep 'Percona' | grep '5\.7'
+	./tests/01-version.sh "percona" "5.7"
+	./tests/02-mysqli.sh  "percona" "5.7"
 test-percona-8.0:
-	docker run --rm -it $(IMAGE):percona-8.0 -V | grep 'Percona' | grep '8\.0'
+	./tests/01-version.sh "percona" "8.0"
+	./tests/02-mysqli.sh  "percona" "8.0"
