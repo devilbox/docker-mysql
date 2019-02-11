@@ -27,6 +27,14 @@ build-mysql-5.7:
 	docker tag mysql:5.7 $(IMAGE):mysql-5.7
 build-mysql-8.0:
 	while ! docker pull mysql:8.0; do sleep 1; done
+	# Adjust and commit authentication
+	docker run -it -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --name devilbox-mysql-commit mysql:8.0
+	docker exec -it devilbox-mysql-commit \
+		sed -i'' "s/^symbolic-links.*$$/symbolic-links=0\ndefault-authentication-plugin=mysql_native_password/g" /etc/mysql/my.cnf
+	docker diff devilbox-mysql-commit
+	docker commit devilbox-mysql-commit mysql:8.0
+	docker stop devilbox-mysql-commit
+	# /Adjust and commit authentication
 	docker tag mysql:8.0 $(IMAGE):mysql-8.0
 
 test-mysql-5.5:
@@ -89,6 +97,15 @@ build-percona-5.7:
 	docker tag percona:5.7 $(IMAGE):percona-5.7
 build-percona-8.0:
 	while ! docker pull percona:8.0; do sleep 1; done
+	# Adjust and commit authentication
+	docker run -it -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --name devilbox-mysql-commit percona:8.0
+	docker exec -it --user root devilbox-mysql-commit \
+		sed -i'' "s|^pid-file=.*$$|pid-file=/var/run/mysqld/mysqld.pid\ndefault-authentication-plugin=mysql_native_password|g" /etc/my.cnf
+	#docker exec -it --user root devilbox-mysql-commit rm -rf /var/log/mysql
+	docker diff devilbox-mysql-commit
+	docker commit devilbox-mysql-commit percona:8.0
+	docker stop devilbox-mysql-commit
+	# /Adjust and commit authentication
 	docker tag percona:8.0 $(IMAGE):percona-8.0
 
 test-percona-5.5:
