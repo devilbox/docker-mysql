@@ -1,6 +1,7 @@
 # vi: ft=dockerfile
 FROM percona:8.0
 
+USER root
 RUN set -eux \
 	&& mkdir -p /etc/mysql/docker-default.d/ \
 	&& if [ -f /etc/my.cnf ]; then \
@@ -10,6 +11,5 @@ RUN set -eux \
 	else \
 		echo "/etc/my.cnf and /etc/mysql/my.cnf are not availanle"; \
 		false; \
-	fi \
-# Allow native password handling in Percona 8.0
-	&& sed -i'' "s|^pid-file=.*$|pid-file=/var/run/mysqld/mysqld.pid\ndefault-authentication-plugin=mysql_native_password|g" /etc/my.cnf
+	fi
+USER mysql
