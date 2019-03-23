@@ -56,6 +56,15 @@ In case you seek help, go and visit the community pages.
 </table>
 
 
+## Additional features
+
+The provided images are purely based on their official counterparts, however they have also been
+slightly customized/enhanced additions added:
+
+* An additional \*.cnf config directory is provided: `/etc/mysql/docker-default.d/`. This is necessary as the default config directory already contains \*.cnf files and you might want to keep them and still be able to additionally provide custom files
+* MySQL 8.0 and Percona 8.0 by default use a new authentication mechanism which is not (yet) understood by PHP's mysqli module. For those two images, the old authentication type has been re-enabled, so you can still use it with your current PHP code.
+
+
 ## Docker Tags
 
 For retagged information see below.
