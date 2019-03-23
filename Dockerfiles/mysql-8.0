@@ -1,0 +1,15 @@
+# vi: ft=dockerfile
+FROM mysql:8.0
+
+RUN set -eux \
+	&& mkdir -p /etc/mysql/docker-default.d/ \
+	&& if [ -f /etc/my.cnf ]; then \
+		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/my.cnf; \
+	elif [ -f /etc/mysql/my.cnf ]; then \
+		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/mysql/my.cnf; \
+	else \
+		echo "/etc/my.cnf and /etc/mysql/my.cnf are not availanle"; \
+		false; \
+	fi \
+# Allow native password handling for MySQL 8.0
+	&& sed -i'' "s/^symbolic-links.*$/symbolic-links=0\ndefault-authentication-plugin=mysql_native_password/g" /etc/mysql/my.cnf

@@ -1,0 +1,13 @@
+# vi: ft=dockerfile
+FROM mysql:5.7
+
+RUN set -eux \
+	&& mkdir -p /etc/mysql/docker-default.d/ \
+	&& if [ -f /etc/my.cnf ]; then \
+		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/my.cnf; \
+	elif [ -f /etc/mysql/my.cnf ]; then \
+		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/mysql/my.cnf; \
+	else \
+		echo "/etc/my.cnf and /etc/mysql/my.cnf are not availanle"; \
+		false; \
+	fi
