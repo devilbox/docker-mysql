@@ -105,7 +105,7 @@ For retagged information see below.
 | `percona:5.5`          | `devilbox/mysql:percona-5.5`  |
 | `percona:5.6`          | `devilbox/mysql:percona-5.6`  |
 | `percona:5.7`          | `devilbox/mysql:percona-5.7`  |
-| `percona:8.0`          | `devilbox/mysql:percona-5.5`  |
+| `percona:8.0`          | `devilbox/mysql:percona-8.0`  |
 
 
 ## License
