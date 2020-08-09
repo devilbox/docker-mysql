@@ -12,4 +12,4 @@ RUN set -eux \
 		false; \
 	fi \
 # Allow native password handling for MySQL 8.0
-	&& sed -i'' "s/^symbolic-links.*$/symbolic-links=0\ndefault-authentication-plugin=mysql_native_password/g" /etc/mysql/my.cnf
+	&& sed -i'' 's/^\[mysqld\]/[mysqld]\ndefault-authentication-plugin=mysql_native_password/g' /etc/mysql/my.cnf
