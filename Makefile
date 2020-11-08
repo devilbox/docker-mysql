@@ -6,9 +6,9 @@ FILES = Dockerfiles/
 # CONVENIENCE TARGETS
 # -------------------------------------------------------------------------------------------------
 
-build: build-mysql-5.5 build-mysql-5.6 build-mysql-5.7 build-mysql-8.0 build-mariadb-5.5 build-mariadb-10.0 build-mariadb-10.1 build-mariadb-10.2 build-mariadb-10.3 build-mariadb-10.4 build-percona-5.5 build-percona-5.6 build-percona-5.7 build-percona-8.0
+build: build-mysql-5.5 build-mysql-5.6 build-mysql-5.7 build-mysql-8.0 build-mariadb-5.5 build-mariadb-10.0 build-mariadb-10.1 build-mariadb-10.2 build-mariadb-10.3 build-mariadb-10.4 build-mariadb-10.5 build-percona-5.5 build-percona-5.6 build-percona-5.7 build-percona-8.0
 
-test: test-mysql-5.5 test-mysql-5.6 test-mysql-5.7 test-mysql-8.0 test-mariadb-5.5 test-mariadb-10.0 test-mariadb-10.1 test-mariadb-10.2 test-mariadb-10.3 test-mariadb-10.4 test-percona-5.5 test-percona-5.6 test-percona-5.7 test-percona-8.0
+test: test-mysql-5.5 test-mysql-5.6 test-mysql-5.7 test-mysql-8.0 test-mariadb-5.5 test-mariadb-10.0 test-mariadb-10.1 test-mariadb-10.2 test-mariadb-10.3 test-mariadb-10.4 test-mariadb-10.5 test-percona-5.5 test-percona-5.6 test-percona-5.7 test-percona-8.0
 
 login:
 	yes | docker login --username $(USER) --password $(PASS)
@@ -61,6 +61,9 @@ build-mariadb-10.3:
 build-mariadb-10.4:
 	while ! docker pull mariadb:10.4; do sleep 1; done
 	docker build --no-cache -t $(IMAGE):mariadb-10.4 -f $(FILES)/mariadb-10.4 $(FILES)
+build-mariadb-10.5:
+	while ! docker pull mariadb:10.5; do sleep 1; done
+	docker build --no-cache -t $(IMAGE):mariadb-10.5 -f $(FILES)/mariadb-10.5 $(FILES)
 
 test-mariadb-5.5:
 	./tests/tests.sh "mariadb" "5.5"
@@ -74,6 +77,8 @@ test-mariadb-10.3:
 	./tests/tests.sh "mariadb" "10.3"
 test-mariadb-10.4:
 	./tests/tests.sh "mariadb" "10.4"
+test-mariadb-10.5:
+	./tests/tests.sh "mariadb" "10.5"
 
 
 # -------------------------------------------------------------------------------------------------
