@@ -42,6 +42,7 @@ env:
     - V=mariadb-10.2
     - V=mariadb-10.3
     - V=mariadb-10.4
+    - V=mariadb-10.5
     - V=percona-5.5
     - V=percona-5.6
     - V=percona-5.7
