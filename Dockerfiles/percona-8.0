@@ -18,3 +18,4 @@ RUN set -eux \
 
 USER mysql
 ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["mysqld"]
