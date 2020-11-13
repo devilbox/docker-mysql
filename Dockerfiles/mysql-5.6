@@ -8,8 +8,11 @@ RUN set -eux \
 	elif [ -f /etc/mysql/my.cnf ]; then \
 		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/mysql/my.cnf; \
 	else \
-		echo "/etc/my.cnf and /etc/mysql/my.cnf are not availanle"; \
+		echo "/etc/my.cnf and /etc/mysql/my.cnf are not available"; \
 		false; \
+	fi \
+	&& if [ -f "/entrypoint.sh" ]; then \
+		mv "/entrypoint.sh" "/docker-entrypoint.sh"; \
 	fi \
 	&& chmod +x "/docker-entrypoint.sh"
 
