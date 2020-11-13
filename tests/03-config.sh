@@ -19,7 +19,7 @@ echo "${CNF_KEY} = ${CNF_VAL}" >> "${CNF_DIR}/config.cnf"
 # Start MySQL
 docker run \
 	-d \
-	-it \
+	$(tty -s && echo "-it" || echo) \
 	--rm \
 	--hostname=mysql \
 	--name devilbox-test-mysql \
@@ -30,19 +30,22 @@ docker run \
 # Test MySQL connectivity
 max=100
 i=0
-while ! docker exec -it devilbox-test-mysql mysql -uroot --password="" -h 127.0.0.1 -e "SHOW VARIABLES LIKE '%${CNF_KEY}%';" | grep "${CNF_VAL}"; do
+while ! docker exec $(tty -s && echo "-it" || echo) devilbox-test-mysql mysql -uroot --password="" -h 127.0.0.1 -e "SHOW VARIABLES LIKE '%${CNF_KEY}%';" | grep "${CNF_VAL}"; do
 	sleep 1
 	i=$(( i + 1))
 	if [ "${i}" -ge "${max}" ]; then
-		docker logs devilbox-test-mysql || true
-		docker stop devilbox-test-mysql || true
-		docker kill devilbox-test-mysql || true
+		docker logs devilbox-test-mysql  2>/dev/null || true
+		docker stop devilbox-test-mysql  2>/dev/null || true
+		docker kill devilbox-test-mysql  2>/dev/null || true
+		docker rm -f devilbox-test-mysql 2>/dev/null || true
 		rm -rf "${CNF_DIR}" || true
 		>&2 echo "Failed"
 		exit 1
 	fi
 done
 
-docker stop devilbox-test-mysql || true
+docker stop devilbox-test-mysql  2>/dev/null || true
+docker kill devilbox-test-mysql  2>/dev/null || true
+docker rm -f devilbox-test-mysql 2>/dev/null || true
 rm -rf "${CNF_DIR}" || true
 echo "Success"

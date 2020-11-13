@@ -9,11 +9,11 @@ VERSION="${2}"
 
 
 if [ "${TYPE}" = "mysql" ]; then
-	docker run --rm -it "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'MySQL' | grep "${VERSION/./\\.}"
+	docker run --rm $(tty -s && echo "-it" || echo) "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'MySQL' | grep "${VERSION/./\\.}"
 elif [ "${TYPE}" = "mariadb" ]; then
-	docker run --rm -it "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'MariaDB' | grep "${VERSION/./\\.}"
+	docker run --rm $(tty -s && echo "-it" || echo) "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'MariaDB' | grep "${VERSION/./\\.}"
 elif [ "${TYPE}" = "percona" ]; then
-	docker run --rm -it "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'Percona' | grep "${VERSION/./\\.}"
+	docker run --rm $(tty -s && echo "-it" || echo) "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'Percona' | grep "${VERSION/./\\.}"
 else
 	>&2 echo "[ERROR] Wrong type: ${TYPE}"
 	exit 1

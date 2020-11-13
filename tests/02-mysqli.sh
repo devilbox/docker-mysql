@@ -13,7 +13,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "1/5 Starting MySQL"
 docker run \
 	-d \
-	-it \
+	$(tty -s && echo "-it" || echo) \
 	--rm \
 	--hostname=mysql \
 	--name devilbox-test-mysql \
@@ -30,39 +30,56 @@ done
 echo "3/5 Starting PHP"
 docker run \
 	-d \
-	-it \
+	$(tty -s && echo "-it" || echo) \
 	--rm \
 	--hostname=php \
-	--entrypoint=bash \
 	--name devilbox-test-php \
 	--volume="${SCRIPTPATH}:/tmp" \
-	--link devilbox-test-mysql php:7.2
+	--link devilbox-test-mysql php:7.2 sh -c 'sleep 9000'
 
 # Install PHP mysqli module
 echo "4/5 Installing mysqli extension"
-docker exec -it devilbox-test-php docker-php-ext-install mysqli
+if ! docker exec $(tty -s && echo "-it" || echo) devilbox-test-php sh -c 'docker-php-ext-install mysqli'; then
+	docker logs devilbox-test-php    2>/dev/null || true
+	docker logs devilbox-test-mysql  2>/dev/null || true
+	docker stop devilbox-test-php    2>/dev/null || true
+	docker stop devilbox-test-mysql  2>/dev/null || true
+	docker kill devilbox-test-php    2>/dev/null || true
+	docker kill devilbox-test-mysql  2>/dev/null || true
+	docker rm -f devilbox-test-php   2>/dev/null || true
+	docker rm -f devilbox-test-mysql 2>/dev/null || true
+	exit 1
+fi
 
 # Test MySQL connectivity
 max=100
 i=0
 printf "5/5 Testing mysqli extension "
-while ! docker exec -it devilbox-test-php php /tmp/mysql.php >/dev/null 2>&1; do
+while ! docker exec $(tty -s && echo "-it" || echo) devilbox-test-php php /tmp/mysql.php >/dev/null 2>&1; do
 	printf "."
 	sleep 1
 	i=$(( i + 1))
 	if [ "${i}" -ge "${max}" ]; then
-		printf "\n"
+		printf "\\n"
 		>&2 echo "Failed"
-		docker exec -it devilbox-test-php php /tmp/mysql.php || true
-		docker logs devilbox-test-php   || true
-		docker logs devilbox-test-mysql || true
-		docker stop devilbox-test-php   || true
-		docker stop devilbox-test-mysql || true
+		docker exec $(tty -s && echo "-it" || echo) devilbox-test-php php /tmp/mysql.php || true
+		docker logs devilbox-test-php    2>/dev/null || true
+		docker logs devilbox-test-mysql  2>/dev/null || true
+		docker stop devilbox-test-php    2>/dev/null || true
+		docker stop devilbox-test-mysql  2>/dev/null || true
+		docker kill devilbox-test-php    2>/dev/null || true
+		docker kill devilbox-test-mysql  2>/dev/null || true
+		docker rm -f devilbox-test-php   2>/dev/null || true
+		docker rm -f devilbox-test-mysql 2>/dev/null || true
 		exit 1
 	fi
 done
-printf "\n"
+printf "\\n"
 
-docker stop devilbox-test-php   || true
-docker stop devilbox-test-mysql || true
+docker stop devilbox-test-php    2>/dev/null || true
+docker stop devilbox-test-mysql  2>/dev/null || true
+docker kill devilbox-test-php    2>/dev/null || true
+docker kill devilbox-test-mysql  2>/dev/null || true
+docker rm -f devilbox-test-php   2>/dev/null || true
+docker rm -f devilbox-test-mysql 2>/dev/null || true
 echo "Success"

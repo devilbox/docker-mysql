@@ -1,6 +1,7 @@
 # MySQL Docker images
 
 [![Build Status](https://travis-ci.org/devilbox/docker-mysql.svg?branch=master)](https://travis-ci.org/devilbox/docker-mysql)
+[![CI](https://github.com/devilbox/docker-mysql/workflows/MYSQL-CI/badge.svg)](https://github.com/devilbox/docker-mysql/actions?workflow=MYSQL-CI)
 [![Tag](https://img.shields.io/github/tag/devilbox/docker-mysql.svg)](https://github.com/devilbox/docker-mysql/releases)
 [![Gitter](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Discourse](https://img.shields.io/discourse/https/devilbox.discourse.group/status.svg?colorB=%234CB697)](https://devilbox.discourse.group)
