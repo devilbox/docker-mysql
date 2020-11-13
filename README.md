@@ -66,6 +66,23 @@ slightly customized/enhanced additions added:
 * MySQL 8.0 and Percona 8.0 by default use a new authentication mechanism which is not (yet) understood by PHP's mysqli module. For those two images, the old authentication type has been re-enabled, so you can still use it with your current PHP code.
 
 
+## Defaults
+
+### Docker Image
+
+| What       | Value                       |
+|------------|-----------------------------|
+| ENTRYPOINT | `["/docker-entrypoint.sh"]` |
+| CMD        | `["mysqld"]`                |
+
+### Mountpoints
+
+| Path                           | Description                            |
+|--------------------------------|----------------------------------------|
+| `/etc/mysql/conf.d`            | Default primary config mountpoint      |
+| `/etc/mysql/docker-default.d/` | Additional secondary config mountpoint |
+
+
 ## Docker Tags
 
 For retagged information see below.
