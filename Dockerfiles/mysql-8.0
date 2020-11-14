@@ -8,8 +8,18 @@ RUN set -eux \
 	elif [ -f /etc/mysql/my.cnf ]; then \
 		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/mysql/my.cnf; \
 	else \
-		echo "/etc/my.cnf and /etc/mysql/my.cnf are not availanle"; \
+		echo "/etc/my.cnf and /etc/mysql/my.cnf are not available"; \
 		false; \
 	fi \
 # Allow native password handling for MySQL 8.0
-	&& sed -i'' 's/^\[mysqld\]/[mysqld]\ndefault-authentication-plugin=mysql_native_password/g' /etc/mysql/my.cnf
+	&& sed -i'' 's/^\[mysqld\]/[mysqld]\ndefault-authentication-plugin=mysql_native_password/g' /etc/mysql/my.cnf \
+	&& if [ -f "/entrypoint.sh" ]; then \
+		mv "/entrypoint.sh" "/docker-entrypoint.sh"; \
+	fi \
+	&& if [ ! -f "/docker-entrypoint.sh" ]; then \
+		ln -s "/usr/local/bin/docker-entrypoint.sh" "/docker-entrypoint.sh"; \
+	fi \
+	&& chmod +x "/docker-entrypoint.sh"
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["mysqld"]

@@ -1,6 +1,7 @@
 # MySQL Docker images
 
 [![Build Status](https://travis-ci.org/devilbox/docker-mysql.svg?branch=master)](https://travis-ci.org/devilbox/docker-mysql)
+[![CI](https://github.com/devilbox/docker-mysql/workflows/MYSQL-CI/badge.svg)](https://github.com/devilbox/docker-mysql/actions?workflow=MYSQL-CI)
 [![Tag](https://img.shields.io/github/tag/devilbox/docker-mysql.svg)](https://github.com/devilbox/docker-mysql/releases)
 [![Gitter](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Discourse](https://img.shields.io/discourse/https/devilbox.discourse.group/status.svg?colorB=%234CB697)](https://devilbox.discourse.group)
@@ -63,6 +64,23 @@ slightly customized/enhanced additions added:
 
 * An additional \*.cnf config directory is provided: `/etc/mysql/docker-default.d/`. This is necessary as the default config directory already contains \*.cnf files and you might want to keep them and still be able to additionally provide custom files
 * MySQL 8.0 and Percona 8.0 by default use a new authentication mechanism which is not (yet) understood by PHP's mysqli module. For those two images, the old authentication type has been re-enabled, so you can still use it with your current PHP code.
+
+
+## Defaults
+
+### Docker Image
+
+| What       | Value                       |
+|------------|-----------------------------|
+| ENTRYPOINT | `["/docker-entrypoint.sh"]` |
+| CMD        | `["mysqld"]`                |
+
+### Mountpoints
+
+| Path                           | Description                            |
+|--------------------------------|----------------------------------------|
+| `/etc/mysql/conf.d`            | Default primary config mountpoint      |
+| `/etc/mysql/docker-default.d/` | Additional secondary config mountpoint |
 
 
 ## Docker Tags
