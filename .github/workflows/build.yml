@@ -1,0 +1,180 @@
+---
+
+# -------------------------------------------------------------------------------------------------
+# Job Name
+# -------------------------------------------------------------------------------------------------
+name: build
+
+
+# -------------------------------------------------------------------------------------------------
+# When to run
+# -------------------------------------------------------------------------------------------------
+on:
+  # Runs on Pull Requests
+  pull_request:
+  # Runs on Push
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+
+
+# -------------------------------------------------------------------------------------------------
+# What to run
+# -------------------------------------------------------------------------------------------------
+jobs:
+  build:
+    name: "[ ${{ matrix.images }} ]"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        images:
+          - 'mysql    5.5'
+          - 'mysql    5.6'
+          - 'mysql    5.7'
+          - 'mysql    5.8'
+          - 'mariadb  5.5'
+          - 'mariadb 10.0'
+          - 'mariadb 10.1'
+          - 'mariadb 10.2'
+          - 'mariadb 10.3'
+          - 'mariadb 10.4'
+          - 'mariadb 10.5'
+          - 'percona  5.5'
+          - 'percona  5.6'
+          - 'percona  5.7'
+          - 'percona  5.8'
+    steps:
+      # ------------------------------------------------------------
+      # Setup repository
+      # ------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set variables
+        id: vars
+        run: |
+
+          # Separate version and name
+          MYSQL="$( echo "${IMAGES}" | awk '{print $1}' )"
+          VERSION="$( echo "${IMAGES}" | awk '{print $2}' )"
+
+          # Retrieve git info (tags, etc)
+          git fetch --all
+
+          # Branch, Tag or Commit
+          GIT_TYPE="$( \
+            curl -sS https://raw.githubusercontent.com/cytopia/git-tools/master/git-info.sh \
+            | sh \
+            | grep '^GIT_TYPE' \
+            | sed 's|.*=||g' \
+          )"
+          # Branch name, Tag name or Commit Hash
+          GIT_SLUG="$( \
+            curl -sS https://raw.githubusercontent.com/cytopia/git-tools/master/git-info.sh \
+            | sh \
+            | grep '^GIT_NAME' \
+            | sed 's|.*=||g' \
+          )"
+          # Docker Tag
+          if [ "${GIT_TYPE}" = "BRANCH" ] && [ "${GIT_SLUG}" = "master" ]; then
+            DOCKER_TAG="${MYSQL}-${VERSION}"
+          else
+            DOCKER_TAG="${MYSQL}-${VERSION}-${GIT_SLUG}"
+          fi
+
+          # Output
+          echo "GIT_TYPE=${GIT_TYPE}"
+          echo "GIT_SLUG=${GIT_SLUG}"
+          echo "DOCKER_TAG=${DOCKER_TAG}"
+          echo "MYSQL=${MYSQL}"
+          echo "VERSION=${VERSION}"
+
+          # Export variable
+          # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#environment-files
+          echo "GIT_TYPE=${GIT_TYPE}"     >> ${GITHUB_ENV}
+          echo "GIT_SLUG=${GIT_SLUG}"     >> ${GITHUB_ENV}
+          echo "DOCKER_TAG=${DOCKER_TAG}" >> ${GITHUB_ENV}
+          echo "MYSQL=${MYSQL}"           >> ${GITHUB_ENV}
+          echo "VERSION=${VERSION}"       >> ${GITHUB_ENV}
+        env:
+          IMAGES: ${{ matrix.images }}
+
+
+      # ------------------------------------------------------------
+      # Builder
+      # ------------------------------------------------------------
+      - name: Build
+        run: |
+          retry() {
+            for n in $(seq ${RETRIES}); do
+              echo "[${n}/${RETRIES}] ${*}";
+              if eval "${*}"; then
+                echo "[SUCC] ${n}/${RETRIES}";
+                return 0;
+              fi;
+              sleep 2;
+              echo "[FAIL] ${n}/${RETRIES}";
+            done;
+            return 1;
+          }
+          retry make build MYSQL=${MYSQL} VERSION=${VERSION}
+        env:
+          RETRIES: 10
+
+      # ------------------------------------------------------------
+      # Test
+      # ------------------------------------------------------------
+      - name: Test
+        run: |
+          retry() {
+            for n in $(seq ${RETRIES}); do
+              echo "[${n}/${RETRIES}] ${*}";
+              if eval "${*}"; then
+                echo "[SUCC] ${n}/${RETRIES}";
+                return 0;
+              fi;
+              sleep 2;
+              echo "[FAIL] ${n}/${RETRIES}";
+            done;
+            return 1;
+          }
+          retry make test MYSQL=${MYSQL} VERSION=${VERSION}
+        env:
+          RETRIES: 10
+
+      # ------------------------------------------------------------
+      # Deploy
+      # ------------------------------------------------------------
+      - name: Publish images (only repo owner)
+        run: |
+
+          # Output
+          echo "GIT_TYPE=${GIT_TYPE}"
+          echo "GIT_SLUG=${GIT_SLUG}"
+          echo "DOCKER_TAG=${DOCKER}"
+          echo "MYSQL=${MYSQL}"
+          echo "VERSION=${VERSION}"
+
+          # Tag image
+          make tag MYSQL=$(MYSQL) VERSION=$(VERSION) TAG=$(DOCKER_TAG)
+          docker images | grep devilbox
+
+          # Login
+          make login USERNAME=${{ secrets.DOCKERHUB_USERNAME }} PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}
+
+          # Push
+          make push TAG=${DOCKER_TAG}
+        # https://help.github.com/en/github/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions#functions
+        if: github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
+            && (
+              (github.event_name == 'schedule' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')))
+              ||
+              (github.event_name == 'push'     && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')))
+              ||
+              (github.event_name == 'push'     && startsWith(github.ref, 'refs/heads/release-'))
+            )
