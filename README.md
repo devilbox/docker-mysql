@@ -1,7 +1,10 @@
 # MySQL Docker images
 
-[![Build Status](https://travis-ci.org/devilbox/docker-mysql.svg?branch=master)](https://travis-ci.org/devilbox/docker-mysql)
-[![CI](https://github.com/devilbox/docker-mysql/workflows/MYSQL-CI/badge.svg)](https://github.com/devilbox/docker-mysql/actions?workflow=MYSQL-CI)
+
+[![lint](https://github.com/devilbox/docker-mysql/workflows/lint/badge.svg)](https://github.com/devilbox/docker-mysql/actions?query=workflow%3Alint)
+[![build](https://github.com/devilbox/docker-mysql/workflows/build/badge.svg)](https://github.com/devilbox/docker-mysql/actions?query=workflow%3Abuild)
+[![nightly](https://github.com/devilbox/docker-mysql/workflows/nightly/badge.svg)](https://github.com/devilbox/docker-mysql/actions?query=workflow%3Anightly)
+
 [![Tag](https://img.shields.io/github/tag/devilbox/docker-mysql.svg)](https://github.com/devilbox/docker-mysql/releases)
 [![Gitter](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Discourse](https://img.shields.io/discourse/https/devilbox.discourse.group/status.svg?colorB=%234CB697)](https://devilbox.discourse.group)
@@ -113,6 +116,8 @@ For retagged information see below.
 | `mariadb:10.3`         | `devilbox/mysql:mariadb-10.3` |
 | `mariadb:10.4`         | `devilbox/mysql:mariadb-10.4` |
 | `mariadb:10.5`         | `devilbox/mysql:mariadb-10.5` |
+| `mariadb:10.6`         | `devilbox/mysql:mariadb-10.6` |
+| `mariadb:10.7`         | `devilbox/mysql:mariadb-10.7` |
 
 #### Percona
 
