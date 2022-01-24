@@ -159,7 +159,7 @@ jobs:
           echo "VERSION=${VERSION}"
 
           # Tag image
-          make tag MYSQL=$(MYSQL) VERSION=$(VERSION) TAG=$(DOCKER_TAG)
+          make tag MYSQL=${MYSQL} VERSION=${VERSION} TAG=${DOCKER_TAG}
           docker images | grep devilbox
 
           # Login
