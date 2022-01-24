@@ -43,7 +43,7 @@ jobs:
           - 'percona  5.5'
           - 'percona  5.6'
           - 'percona  5.7'
-          - 'percona  5.8'
+          - 'percona  8.0'
     steps:
       # ------------------------------------------------------------
       # Setup repository
