@@ -116,6 +116,8 @@ For retagged information see below.
 | `mariadb:10.3`         | `devilbox/mysql:mariadb-10.3` |
 | `mariadb:10.4`         | `devilbox/mysql:mariadb-10.4` |
 | `mariadb:10.5`         | `devilbox/mysql:mariadb-10.5` |
+| `mariadb:10.6`         | `devilbox/mysql:mariadb-10.6` |
+| `mariadb:10.7`         | `devilbox/mysql:mariadb-10.7` |
 
 #### Percona
 
