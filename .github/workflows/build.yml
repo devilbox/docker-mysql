@@ -26,6 +26,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        refs:
+          - 'master'
+          - '0.8'
         include:
           - FLAVOUR: mysql
             VERSION: "5.5"
