@@ -21,29 +21,48 @@ on:
 # -------------------------------------------------------------------------------------------------
 jobs:
   build:
-    name: "[ ${{ matrix.images }} ]"
+    name: "[ ${{ matrix.FLAVOUR }}-${{ matrix.VERSION }} ]"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        images:
-          - 'mysql    5.5'
-          - 'mysql    5.6'
-          - 'mysql    5.7'
-          - 'mysql    8.0'
-          - 'mariadb  5.5'
-          - 'mariadb 10.0'
-          - 'mariadb 10.1'
-          - 'mariadb 10.2'
-          - 'mariadb 10.3'
-          - 'mariadb 10.4'
-          - 'mariadb 10.5'
-          - 'mariadb 10.6'
-          - 'mariadb 10.7'
-          - 'percona  5.5'
-          - 'percona  5.6'
-          - 'percona  5.7'
-          - 'percona  8.0'
+        include:
+          - FLAVOUR: mysql
+            VERSION: 5.5
+          - FLAVOUR: mysql
+            VERSION: 5.6
+          - FLAVOUR: mysql
+            VERSION: 5.7
+          - FLAVOUR: mysql
+            VERSION: 8.0
+          - FLAVOUR: mariadb
+            VERSION: 5.5
+          - FLAVOUR: mariadb
+            VERSION: 10.0
+          - FLAVOUR: mariadb
+            VERSION: 10.1
+          - FLAVOUR: mariadb
+            VERSION: 10.2
+          - FLAVOUR: mariadb
+            VERSION: 10.3
+          - FLAVOUR: mariadb
+            VERSION: 10.4
+          - FLAVOUR: mariadb
+            VERSION: 10.5
+          - FLAVOUR: mariadb
+            VERSION: 10.6
+          - FLAVOUR: mariadb
+            VERSION: 10.7
+          - FLAVOUR: mariadb
+            VERSION: 10.8
+          - FLAVOUR: percona
+            VERSION: 5.5
+          - FLAVOUR: percona
+            VERSION: 5.6
+          - FLAVOUR: percona
+            VERSION: 5.7
+          - FLAVOUR: percona
+            VERSION: 8.0
     steps:
       # ------------------------------------------------------------
       # Setup repository
@@ -58,8 +77,8 @@ jobs:
         run: |
 
           # Separate version and name
-          MYSQL="$( echo "${IMAGES}" | awk '{print $1}' )"
-          VERSION="$( echo "${IMAGES}" | awk '{print $2}' )"
+          MYSQL="${FLAVOUR}"
+          VERSION="${VERSION}"
 
           # Retrieve git info (tags, etc)
           git fetch --all
@@ -100,7 +119,8 @@ jobs:
           echo "MYSQL=${MYSQL}"           >> ${GITHUB_ENV}
           echo "VERSION=${VERSION}"       >> ${GITHUB_ENV}
         env:
-          IMAGES: ${{ matrix.images }}
+          FLAVOUR: ${{ matrix.FLAVOUR }}
+          VERSION: ${{ matrix.VERSION }}
 
 
       # ------------------------------------------------------------
