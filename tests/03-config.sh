@@ -4,9 +4,11 @@ set -u
 set -o pipefail
 
 IMAGE="devilbox/mysql"
-TYPE="${1}"
-VERSION="${2}"
-ARCH="${3}"
+IMAGE="devilbox/mysql"
+#NAME="${1}"
+#VERSION="${2}"
+TAG="${3}"
+ARCH="${4}"
 
 
 # Custom MySQL configuration
@@ -21,18 +23,18 @@ echo "${CNF_KEY} = ${CNF_VAL}" >> "${CNF_DIR}/config.cnf"
 docker run \
 	-d \
 	--platform "${ARCH}" \
-	$(tty -s && echo "-it" || echo) \
+	"$(tty -s && echo "-it" || echo)" \
 	--rm \
 	--hostname=mysql \
 	--name devilbox-test-mysql \
 	-e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-	-v ${CNF_DIR}:/etc/mysql/docker-default.d \
-	"${IMAGE}:${TYPE}-${VERSION}"
+	-v "${CNF_DIR}:/etc/mysql/docker-default.d" \
+	"${IMAGE}:${TAG}"
 
 # Test MySQL connectivity
 max=100
 i=0
-while ! docker exec $(tty -s && echo "-it" || echo) devilbox-test-mysql mysql -uroot --password="" -h 127.0.0.1 -e "SHOW VARIABLES LIKE '%${CNF_KEY}%';" | grep "${CNF_VAL}"; do
+while ! docker exec "$(tty -s && echo "-it" || echo)" devilbox-test-mysql mysql -uroot --password="" -h 127.0.0.1 -e "SHOW VARIABLES LIKE '%${CNF_KEY}%';" | grep "${CNF_VAL}"; do
 	sleep 1
 	i=$(( i + 1))
 	if [ "${i}" -ge "${max}" ]; then

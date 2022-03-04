@@ -99,6 +99,6 @@ ifeq ($(strip $(VERSION)),)
 	@$(error Exiting)
 endif
 	@echo "################################################################################"
-	@echo "# Testing $(IMAGE):$(NAME)-$(VERSION) $(ARCH)"
+	@echo "# Testing $(IMAGE):$(DOCKER_TAG) $(ARCH)"
 	@echo "################################################################################"
-	./tests/tests.sh "$(NAME)" "$(VERSION)" "$(ARCH)"
+	./tests/tests.sh "$(NAME)" "$(VERSION)" "${DOCKER_TAG}" "$(ARCH)"

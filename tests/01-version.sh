@@ -4,18 +4,19 @@ set -u
 set -o pipefail
 
 IMAGE="devilbox/mysql"
-TYPE="${1}"
+NAME="${1}"
 VERSION="${2}"
-ARCH="${3}"
+TAG="${3}"
+ARCH="${4}"
 
 
-if [ "${TYPE}" = "mysql" ]; then
-	docker run --rm --platform "${ARCH}" $(tty -s && echo "-it" || echo) "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'MySQL' | grep "${VERSION/./\\.}"
-elif [ "${TYPE}" = "mariadb" ]; then
-	docker run --rm --platform "${ARCH}" $(tty -s && echo "-it" || echo) "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'MariaDB' | grep "${VERSION/./\\.}"
-elif [ "${TYPE}" = "percona" ]; then
-	docker run --rm --platform "${ARCH}" $(tty -s && echo "-it" || echo) "${IMAGE}:${TYPE}-${VERSION}" -V | grep 'Percona' | grep "${VERSION/./\\.}"
+if [ "${NAME}" = "mysql" ]; then
+	docker run --rm --platform "${ARCH}" "$(tty -s && echo "-it" || echo)" "${IMAGE}:${TAG}" -V | grep 'MySQL' | grep "${VERSION/./\\.}"
+elif [ "${NAME}" = "mariadb" ]; then
+	docker run --rm --platform "${ARCH}" "$(tty -s && echo "-it" || echo)" "${IMAGE}:${TAG}" -V | grep 'MariaDB' | grep "${VERSION/./\\.}"
+elif [ "${NAME}" = "percona" ]; then
+	docker run --rm --platform "${ARCH}" "$(tty -s && echo "-it" || echo)" "${IMAGE}:${TAG}" -V | grep 'Percona' | grep "${VERSION/./\\.}"
 else
-	>&2 echo "[ERROR] Wrong type: ${TYPE}"
+	>&2 echo "[ERROR] Wrong type: ${NAME}"
 	exit 1
 fi
