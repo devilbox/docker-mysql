@@ -11,7 +11,7 @@
 [![type](https://img.shields.io/badge/type-Docker-blue.svg)](https://hub.docker.com/r/devilbox/mysql)
 [![License](https://img.shields.io/badge/license-MIT-%233DA639.svg)](https://opensource.org/licenses/MIT)
 
-**Available Architectures:**  `amd64`, `arm64`
+**Available Architectures:**  `amd64`, `i386`, `arm64`
 
 The purpose of this project is to simply re-tag the official Docker images for
 [MySQL](https://hub.docker.com/_/mysql), [MariaDB](https://hub.docker.com/_/mariadb) and
