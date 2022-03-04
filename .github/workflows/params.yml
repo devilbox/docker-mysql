@@ -11,30 +11,28 @@ name: params
 # -------------------------------------------------------------------------------------------------
 env:
   NAME: MySQL
-  MATRIX_VERSION: >-
+  MATRIX: >-
     [
-      {"NAME": "mysql",   "VERSION":  "5.5"},
-      {"NAME": "mysql",   "VERSION":  "5.6"},
-      {"NAME": "mysql",   "VERSION":  "5.7"},
-      {"NAME": "mysql",   "VERSION":  "5.8"},
-      {"NAME": "mariadb", "VERSION":  "5.5"},
-      {"NAME": "mariadb", "VERSION": "10.0"},
-      {"NAME": "mariadb", "VERSION": "10.1"},
-      {"NAME": "mariadb", "VERSION": "10.2"},
-      {"NAME": "mariadb", "VERSION": "10.3"},
-      {"NAME": "mariadb", "VERSION": "10.4"},
-      {"NAME": "mariadb", "VERSION": "10.5"},
-      {"NAME": "mariadb", "VERSION": "10.6"},
-      {"NAME": "mariadb", "VERSION": "10.0"},
-      {"NAME": "percona", "VERSION":  "5.5"},
-      {"NAME": "percona", "VERSION":  "5.6"},
-      {"NAME": "percona", "VERSION":  "5.7"},
-      {"NAME": "percona", "VERSION":  "8.0"}
-    ]
-  MATRIX_ARCH: >-
-    [
-      "linux/amd64",
-      "linux/arm64"
+      {
+        "NAME":    "mysql",
+        "VERSION": ["5.5", "5.6", "5.7"],
+        "ARCH":    ["linux/amd64"]
+      },
+      {
+        "NAME":    "mysql",
+        "VERSION": ["8.0"],
+        "ARCH":    ["linux/amd64", "linux/arm64"]
+      },
+      {
+        "NAME":    "mariadb",
+        "VERSION": ["5.5", "10.0", "10.1", "10.2", "10.3", "10.4", "10.5", "10.6"],
+        "ARCH":    ["linux/amd64", "linux/arm64"]
+      },
+      {
+        "NAME":    "percona",
+        "VERSION": ["5.5", "5.6", "5.7", "8.0"],
+        "ARCH":    ["linux/amd64"]
+      }
     ]
 
 
@@ -47,15 +45,12 @@ on:
       name:
         description: "The project name"
         value: ${{ jobs.params.outputs.name }}
-      matrix_version:
+      matrix:
         description: "The determined version matrix"
-        value: ${{ jobs.params.outputs.matrix_version }}
-      matrix_arch:
-        description: "The determined architecture matrix"
-        value: ${{ jobs.params.outputs.matrix_arch }}
-      matrix_refs:
+        value: ${{ jobs.params.outputs.matrix }}
+      refs:
         description: "The determined git ref matrix (only during scheduled run)"
-        value: ${{ jobs.params.outputs.matrix_refs }}
+        value: ${{ jobs.params.outputs.refs }}
 
 jobs:
   params:
@@ -63,34 +58,22 @@ jobs:
 
     outputs:
       name: ${{ steps.set-name.outputs.name }}
-      matrix_version: ${{ steps.set-matrix-version.outputs.matrix }}
-      matrix_arch: ${{ steps.set-matrix-arch.outputs.matrix }}
-      matrix_refs: ${{ steps.set-matrix-refs.outputs.matrix }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      refs: ${{ steps.set-refs.outputs.matrix }}
 
     steps:
-      - name: Test JSON
-        run: |
-          jq -M -c \
-            --argjson arches '${{ env.MATRIX_ARCH }}' \
-            'map({NAME:.NAME, VERSION, ARCH:$arches[]})' <<<'${{ env.MATRIX_VERSION }}'
-
       - name: "Set Name"
         id: set-name
         run: |
           echo '::set-output name=name::${{ env.NAME }}'
 
-      - name: "[Set-Output] Matrix 'Version'"
-        id: set-matrix-version
+      - name: "[Set-Output] Matrix"
+        id: set-matrix
         run: |
-          echo "::set-output name=matrix::$( echo '${{ env.MATRIX_VERSION }}' | jq -M -c )"
-
-      - name: "[Set-Output] Matrix 'Arch'"
-        id: set-matrix-arch
-        run: |
-          echo "::set-output name=matrix::$( echo '${{ env.MATRIX_ARCH }}' | jq -M -c )"
+          echo "::set-output name=matrix::$( echo '${{ env.MATRIX }}' | jq -M -c )"
 
       - name: "[Set-Output] Matrix 'Refs' (master branch and latest tag)"
-        id: set-matrix-refs
+        id: set-refs
         uses: cytopia/git-ref-matrix-action@v0.1.2
         with:
           repository_default_branch: master
@@ -105,14 +88,9 @@ jobs:
           echo '${{ steps.set-name.outputs.name }}'
           echo
 
-          echo 'Matrix: Version'
+          echo 'Matrix'
           echo '--------------------'
-          echo '${{ steps.set-matrix-version.outputs.matrix }}'
-          echo
-
-          echo 'Matrix: Arch'
-          echo '--------------------'
-          echo '${{ steps.set-matrix-arch.outputs.matrix }}'
+          echo '${{ steps.set-matrix.outputs.matrix }}'
           echo
 
           echo 'Matrix: Refs'
