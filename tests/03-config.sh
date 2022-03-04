@@ -6,6 +6,7 @@ set -o pipefail
 IMAGE="devilbox/mysql"
 TYPE="${1}"
 VERSION="${2}"
+ARCH="${3}"
 
 
 # Custom MySQL configuration
@@ -19,6 +20,7 @@ echo "${CNF_KEY} = ${CNF_VAL}" >> "${CNF_DIR}/config.cnf"
 # Start MySQL
 docker run \
 	-d \
+	--platform "${ARCH}" \
 	$(tty -s && echo "-it" || echo) \
 	--rm \
 	--hostname=mysql \

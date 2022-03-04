@@ -6,6 +6,7 @@ set -o pipefail
 IMAGE="devilbox/mysql"
 TYPE="${1}"
 VERSION="${2}"
+ARCH="${3}"
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 
@@ -13,6 +14,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "1/5 Starting MySQL"
 docker run \
 	-d \
+	--platform "${ARCH}" \
 	$(tty -s && echo "-it" || echo) \
 	--rm \
 	--hostname=mysql \
@@ -30,6 +32,7 @@ done
 echo "3/5 Starting PHP"
 docker run \
 	-d \
+	--platform "${ARCH}" \
 	$(tty -s && echo "-it" || echo) \
 	--rm \
 	--hostname=php \

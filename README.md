@@ -11,6 +11,8 @@
 [![type](https://img.shields.io/badge/type-Docker-blue.svg)](https://hub.docker.com/r/devilbox/mysql)
 [![License](https://img.shields.io/badge/license-MIT-%233DA639.svg)](https://opensource.org/licenses/MIT)
 
+**Available Architectures:**  `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`
+
 The purpose of this project is to simply re-tag the official Docker images for
 [MySQL](https://hub.docker.com/_/mysql), [MariaDB](https://hub.docker.com/_/mariadb) and
 [Percona](https://hub.docker.com/_/percona) in order to use them for the
@@ -118,6 +120,7 @@ For retagged information see below.
 | `mariadb:10.5`         | `devilbox/mysql:mariadb-10.5` |
 | `mariadb:10.6`         | `devilbox/mysql:mariadb-10.6` |
 | `mariadb:10.7`         | `devilbox/mysql:mariadb-10.7` |
+| `mariadb:10.8`         | `devilbox/mysql:mariadb-10.8` |
 
 #### Percona
 
