@@ -11,7 +11,7 @@ TAG="${3}"
 ARCH="${4}"
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
-# shellcheck disable=SC1090
+# shellcheck disable=SC1091
 . "${CWD}/.lib.sh"
 
 
