@@ -21,7 +21,7 @@ run "docker run -d --rm --platform ${ARCH} $(tty -s && echo "-it" || echo) --hos
 
 # Pull PHP image
 echo "2/5 Pulling PHP image "
-while ! run "docker pull php:7.2"; do
+while ! run "docker pull --platform ${ARCH} php:7.2"; do
 	sleep 1
 done
 
