@@ -11,7 +11,7 @@ ARCH="${4}"
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
-# shellcheck disable=SC1090
+# shellcheck disable=SC1091
 . "${CWD}/.lib.sh"
 
 
