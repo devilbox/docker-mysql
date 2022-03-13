@@ -97,42 +97,42 @@ For retagged information see below.
 * [DockerHub](https://hub.docker.com/_/mysql)
 * [GitHub](https://github.com/docker-library/mysql)
 
-| Original Image and Tag | New Image and Tag             |
-|------------------------|-------------------------------|
-| `mysql:5.5`            | `devilbox/mysql:mysql-5.5`    |
-| `mysql:5.6`            | `devilbox/mysql:mysql-5.6`    |
-| `mysql:5.7`            | `devilbox/mysql:mysql-5.7`    |
-| `mysql:8.0`            | `devilbox/mysql:mysql-8.0`    |
+| Original Image and Tag | New Image and Tag             | Available platforms |
+|------------------------|-------------------------------|---------------------|
+| `mysql:5.5`            | `devilbox/mysql:mysql-5.5`    | `amd64`       |
+| `mysql:5.6`            | `devilbox/mysql:mysql-5.6`    | `amd64`       |
+| `mysql:5.7`            | `devilbox/mysql:mysql-5.7`    | `amd64`       |
+| `mysql:8.0`            | `devilbox/mysql:mysql-8.0`    | `amd64`, `arm64` |
 
 #### MariaDB
 
 * [DockerHub](https://hub.docker.com/_/mariadb)
 * [GitHub](https://github.com/docker-library/mariadb)
 
-| Original Image and Tag | New Image and Tag             |
-|------------------------|-------------------------------|
-| `mariadb:5.5`          | `devilbox/mysql:mariadb-5.5`  |
-| `mariadb:10.0`         | `devilbox/mysql:mariadb-10.0` |
-| `mariadb:10.1`         | `devilbox/mysql:mariadb-10.1` |
-| `mariadb:10.2`         | `devilbox/mysql:mariadb-10.2` |
-| `mariadb:10.3`         | `devilbox/mysql:mariadb-10.3` |
-| `mariadb:10.4`         | `devilbox/mysql:mariadb-10.4` |
-| `mariadb:10.5`         | `devilbox/mysql:mariadb-10.5` |
-| `mariadb:10.6`         | `devilbox/mysql:mariadb-10.6` |
-| `mariadb:10.7`         | `devilbox/mysql:mariadb-10.7` |
-| `mariadb:10.8`         | `devilbox/mysql:mariadb-10.8` |
+| Original Image and Tag | New Image and Tag             | Available platforms |
+|------------------------|-------------------------------|---------------------|
+| `mariadb:5.5`          | `devilbox/mysql:mariadb-5.5`  | `amd64`       |
+| `mariadb:10.0`         | `devilbox/mysql:mariadb-10.0` | `amd64`       |
+| `mariadb:10.1`         | `devilbox/mysql:mariadb-10.1` | `amd64`, `arm64` |
+| `mariadb:10.2`         | `devilbox/mysql:mariadb-10.2` | `amd64`, `arm64` |
+| `mariadb:10.3`         | `devilbox/mysql:mariadb-10.3` | `amd64`, `arm64` |
+| `mariadb:10.4`         | `devilbox/mysql:mariadb-10.4` | `amd64`, `arm64` |
+| `mariadb:10.5`         | `devilbox/mysql:mariadb-10.5` | `amd64`, `arm64` |
+| `mariadb:10.6`         | `devilbox/mysql:mariadb-10.6` | `amd64`, `arm64` |
+| `mariadb:10.7`         | `devilbox/mysql:mariadb-10.7` | `amd64`, `arm64` |
+| `mariadb:10.8`         | `devilbox/mysql:mariadb-10.8` | `amd64`, `arm64` |
 
 #### Percona
 
 * [DockerHub](https://hub.docker.com/_/percona)
 * [GitHub](https://github.com/docker-library/percona)
 
-| Original Image and Tag | New Image and Tag             |
-|------------------------|-------------------------------|
-| `percona:5.5`          | `devilbox/mysql:percona-5.5`  |
-| `percona:5.6`          | `devilbox/mysql:percona-5.6`  |
-| `percona:5.7`          | `devilbox/mysql:percona-5.7`  |
-| `percona:8.0`          | `devilbox/mysql:percona-8.0`  |
+| Original Image and Tag | New Image and Tag             | Available platforms |
+|------------------------|-------------------------------|---------------------|
+| `percona:5.5`          | `devilbox/mysql:percona-5.5`  | `amd64`       |
+| `percona:5.6`          | `devilbox/mysql:percona-5.6`  | `amd64`       |
+| `percona:5.7`          | `devilbox/mysql:percona-5.7`  | `amd64`       |
+| `percona:8.0`          | `devilbox/mysql:percona-8.0`  | `amd64`       |
 
 
 ## License
