@@ -19,7 +19,7 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 CNF_DIR="$( mktemp -d )"
 chmod 0755 "${CNF_DIR}"
 CNF_KEY="general_log_file"
-CNF_VAL="devilbox.log"
+CNF_VAL="/var/log/devilbox.log"
 echo "[mysqld]" > "${CNF_DIR}/config.cnf"
 echo "${CNF_KEY} = ${CNF_VAL}" >> "${CNF_DIR}/config.cnf"
 
