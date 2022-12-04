@@ -1,0 +1,23 @@
+# vi: ft=dockerfile
+FROM mariadb:10.10
+
+RUN set -eux \
+	&& mkdir -p /etc/mysql/docker-default.d/ \
+	&& if [ -f /etc/my.cnf ]; then \
+		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/my.cnf; \
+	elif [ -f /etc/mysql/my.cnf ]; then \
+		echo '!'"includedir /etc/mysql/docker-default.d/" >> /etc/mysql/my.cnf; \
+	else \
+		echo "/etc/my.cnf and /etc/mysql/my.cnf are not available"; \
+		false; \
+	fi \
+	&& if [ -f "/entrypoint.sh" ]; then \
+		mv "/entrypoint.sh" "/docker-entrypoint.sh"; \
+	fi \
+	&& if [ ! -f "/docker-entrypoint.sh" ]; then \
+		ln -s "/usr/local/bin/docker-entrypoint.sh" "/docker-entrypoint.sh"; \
+	fi \
+	&& chmod +x "/docker-entrypoint.sh"
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["mysqld"]
