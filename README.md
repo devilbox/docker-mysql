@@ -7,8 +7,8 @@
 [![nightly](https://github.com/devilbox/docker-mysql/workflows/nightly/badge.svg)](https://github.com/devilbox/docker-mysql/actions?query=workflow%3Anightly)
 [![License](https://img.shields.io/badge/license-MIT-%233DA639.svg)](https://opensource.org/licenses/MIT)
 
-[![Gitter](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Discourse](https://img.shields.io/discourse/https/devilbox.discourse.group/status.svg?colorB=%234CB697)](https://devilbox.discourse.group)
+[![Discord](https://img.shields.io/discord/1051541389256704091?color=8c9eff&label=Discord&logo=discord)](https://discord.gg/2wP3V6kBj4)
+[![Discourse](https://img.shields.io/discourse/https/devilbox.discourse.group/status.svg?colorB=%234CB697&label=Discourse&logo=discourse)](https://devilbox.discourse.group)
 
 **Available Architectures:**  `amd64`, `arm64`
 
@@ -234,8 +234,8 @@ In case you seek help, go and visit the community pages.
  <thead>
   <tr>
    <th width="33%" style="width:33%;"><h3><a target="_blank" href="https://devilbox.readthedocs.io">📘	Documentation</a></h3></th>
-   <th width="33%" style="width:33%;"><h3><a target="_blank" href="https://gitter.im/devilbox/Lobby">🗪 Chat</a></h3></th>
-   <th width="33%" style="width:33%;"><h3><a target="_blank" href="https://devilbox.discourse.group">🗫 Forum</a></h3></th>
+   <th width="33%" style="width:33%;"><h3><a target="_blank" href="https://discord.gg/2wP3V6kBj4">🎮 Discord</a></h3></th>
+   <th width="33%" style="width:33%;"><h3><a target="_blank" href="https://devilbox.discourse.group">🗪 Forum</a></h3></th>
   </tr>
  </thead>
  <tbody style="vertical-align: middle; text-align: center;">
@@ -246,8 +246,8 @@ In case you seek help, go and visit the community pages.
     </a>
    </td>
    <td>
-    <a target="_blank" href="https://gitter.im/devilbox/Lobby">
-     <img title="Chat on Gitter" name="Chat on Gitter" src="https://raw.githubusercontent.com/cytopia/icons/master/400x400/gitter.png" />
+    <a target="_blank" href="https://discord.gg/2wP3V6kBj4">
+     <img title="Chat on Discord" name="Chat on Discord" src="https://raw.githubusercontent.com/cytopia/icons/master/400x400/discord.png" />
     </a>
    </td>
    <td>
@@ -258,7 +258,7 @@ In case you seek help, go and visit the community pages.
   </tr>
   <tr>
   <td><a target="_blank" href="https://devilbox.readthedocs.io">devilbox.readthedocs.io</a></td>
-  <td><a target="_blank" href="https://gitter.im/devilbox/Lobby">gitter.im/devilbox</a></td>
+  <td><a target="_blank" href="https://discord.gg/2wP3V6kBj4">discord/devilbox</a></td>
   <td><a target="_blank" href="https://devilbox.discourse.group">devilbox.discourse.group</a></td>
   </tr>
  </tbody>
@@ -269,7 +269,7 @@ In case you seek help, go and visit the community pages.
 
 **[@cytopia](https://github.com/cytopia)**
 
-I try to keep with literally **over 100 projects** besides a full-time job.
+I try to keep up with literally **over 100 projects** besides a full-time job.
 If my work is making your life easier, consider contributing. 🖤
 
 * [GitHub Sponsorship](https://github.com/sponsors/cytopia)
